@@ -28,9 +28,9 @@ elseif. UNAME-:'Android' do.
     liblapack=: (({.~ i:&'/') LIBFILE),'/liblapack.so'
   end.
 elseif. do.
-  liblapack=: jpath '~addons/math/lapack2/lib/libopenblas',((-.IF64)#'_32'),'.dll'
+  liblapack=: liblapacklib=: jpath '~addons/math/lapack2/lib/libopenblas',((-.IFWA64){::'_arm64';(-.IF64)#'_32'),'.dll'
   if. -.fexist liblapack do.
-    liblapack=: 'libopenblas',((-.IF64)#'_32'),'.dll'
+    liblapack=: 'libopenblas',((-.IFWA64){::'_arm64';(-.IF64)#'_32'),'.dll'
   end.
 end.
 )
@@ -56,7 +56,7 @@ path=. 'http://www.jsoftware.com/download/lapackbin/'
 arg=. HTTPCMD_jpacman_
 tm=. TIMEOUT_jpacman_
 dq=. dquote_jpacman_ f.
-to=. liblapack_jlapack2_
+to=. IFWIN{::lliblapack_jlapack2_;iblapacklib_jlapack2_
 if. UNAME-:'Android' do.
   path=. 'http://www.jsoftware.com/download/'
   arch=. LF-.~ 2!:0'getprop ro.product.cpu.abi'
